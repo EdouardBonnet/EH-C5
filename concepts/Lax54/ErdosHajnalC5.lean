@@ -3,6 +3,7 @@ import Lax54.GraphDefinitions
 /-!
 ---
 title: Erdős–Hajnal theorem for the five-cycle
+type: theorem
 ---
 There is a positive integer `q` such that every finite graph with no induced
 five-cycle has a clique or stable set of size polynomial in its number of

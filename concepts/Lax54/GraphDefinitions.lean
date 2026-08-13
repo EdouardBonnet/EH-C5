@@ -5,6 +5,7 @@ import Mathlib.Combinatorics.SimpleGraph.Copy
 /-!
 ---
 title: Finite graph notions for the five-cycle Erdős–Hajnal theorem
+type: definition
 ---
 The graph-theoretic definitions used in the formalization.  An induced
 five-cycle is represented by mathlib's induced-containment relation from the

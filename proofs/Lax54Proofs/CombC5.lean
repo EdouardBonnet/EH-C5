@@ -41,14 +41,12 @@ theorem StableHubComb.blocks_anticomplete_of_c5Free
     exact C.tooth_not_mem i j (h ▸ hy)
   have htj_hub : C.tooth j ≠ C.hub := by
     intro h
-    have := C.hub_adj_tooth j
-    simpa [h] using this
+    exact G.loopless.irrefl _ (h ▸ C.hub_adj_tooth j)
   have htj_ti : C.tooth j ≠ C.tooth i :=
     C.tooth_injective.ne hij.symm
   have hhub_ti : C.hub ≠ C.tooth i := by
     intro h
-    have := C.hub_adj_tooth i
-    simpa [h] using this
+    exact G.loopless.irrefl _ (h ▸ C.hub_adj_tooth i)
   have hy_tj_adj : G.Adj y (C.tooth j) :=
     (C.tooth_adj_block j y hy).symm
   have htj_hub_adj : G.Adj (C.tooth j) C.hub :=

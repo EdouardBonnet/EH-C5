@@ -3,6 +3,7 @@ import Lax54.GraphDefinitions
 /-!
 ---
 title: Quantitative critical-comb consequence
+type: theorem
 ---
 This is the combined quantitative consequence of Rödl's theorem (in the
 maximum-degree form 4.3), the key comb lemma 3.1, closure of induced-$C_5$-free
