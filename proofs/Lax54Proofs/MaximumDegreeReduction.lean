@@ -1,7 +1,7 @@
 import Lax54.AveragingLemma
 import Lax54.MaximumDegreeReduction
-import Lax54Proofs.AveragingLemma
-import Lax54Proofs.RodlTheorem
+import Lax54.RodlTheorem
+import Lax54Proofs.GraphComplements
 import Mathlib.Tactic
 
 namespace Lax54Proofs
@@ -12,16 +12,12 @@ open Lax54.GraphDefinitions
 
 universe u v
 
-/-- Taking an induced subgraph commutes with graph complementation. -/
-theorem compl_induce_eq_induce_compl
-    {V : Type u} (G : SimpleGraph V) (S : Set V) :
-    (G.induce S)ᶜ = Gᶜ.induce S := by
-  ext x y
-  simp [SimpleGraph.compl_adj, Subtype.ext_iff]
-
 /--
 ---
 conclusion: Lax54.MaximumDegreeReduction.maximum_degree_reduction
+assumptions:
+  - Lax54.AveragingLemma.sparse_graph_thinning
+  - Lax54.RodlTheorem.rodl_theorem
 ---
 Proof of Lemma 4.3. Apply Rödl's theorem with density parameter $4E$, then
 apply Lemma 4.2 with $m=\lceil |Z|/2\rceil$. The resulting set loses at most
@@ -35,7 +31,7 @@ theorem maximum_degree_reduction :
           ¬ H ⊴ G → HasLowDegreeSide G E D := by
   intro W _ H E hE
   obtain ⟨D₀, hD₀, hrodl⟩ :=
-    Lax54Proofs.RodlTheorem.rodl_theorem H (4 * E) (by positivity)
+    Lax54.RodlTheorem.rodl_theorem H (4 * E) (by positivity)
   refine ⟨2 * D₀, by positivity, ?_⟩
   intro V _ _ G _ hfree
   by_cases hV : Fintype.card V = 0
@@ -69,7 +65,7 @@ theorem maximum_degree_reduction :
         Z.card * (Z.card - 1) := by
       simpa [← Set.toFinset_card] using hsparse
     obtain ⟨X, hXZ, hXcard, hdegree⟩ :=
-      Lax54Proofs.sparse_graph_thinning G Z (4 * E) m
+      Lax54.AveragingLemma.sparse_graph_thinning G Z (4 * E) m
         (by positivity) hmsize hsparse'
     refine ⟨X, horder X hXcard, Or.inl ?_⟩
     intro x
@@ -91,7 +87,7 @@ theorem maximum_degree_reduction :
       rw [compl_induce_eq_induce_compl]
     rw [hedgeFinset] at hsparse'
     obtain ⟨X, hXZ, hXcard, hdegree⟩ :=
-      Lax54Proofs.sparse_graph_thinning Gᶜ Z (4 * E) m
+      Lax54.AveragingLemma.sparse_graph_thinning Gᶜ Z (4 * E) m
         (by positivity) hmsize hsparse'
     refine ⟨X, horder X hXcard, Or.inr ?_⟩
     intro x

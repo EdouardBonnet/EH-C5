@@ -1,7 +1,7 @@
 import Lax54.CriticalCombInput
 import Lax54.ErdosHajnalC5
 import Lax54Proofs.CombC5
-import Lax54Proofs.CriticalCombInput
+import Lax54Proofs.GraphComplements
 import Lax54Proofs.KappaBlocks
 import Mathlib.Tactic
 
@@ -147,6 +147,8 @@ theorem kappa_pow_bound_of_critical_comb
 /--
 ---
 conclusion: Lax54.ErdosHajnalC5.erdos_hajnal_C5
+assumptions:
+  - Lax54.CriticalCombInput.exists_critical_comb_parameters
 ---
 Proof of Theorem 4.4. Strong induction reduces the result to a critical
 counterexample. The critical-comb statement and the induced-$C_5$ obstruction
@@ -158,7 +160,7 @@ theorem erdos_hajnal_C5 :
       ∀ {V : Type u} [Fintype V] (G : SimpleGraph V),
         IsC5Free G → Fintype.card V ≤ homogeneousNumber G ^ q := by
   obtain ⟨q, A, hq, hA, hcomb⟩ :=
-    Lax54Proofs.CriticalCombInput.exists_critical_comb_parameters
+    Lax54.CriticalCombInput.exists_critical_comb_parameters
   refine ⟨2 * q, by omega, ?_⟩
   intro V _ G hfree
   have hkappa : Fintype.card V ≤ kappa G ^ q :=

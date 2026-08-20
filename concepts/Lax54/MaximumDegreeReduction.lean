@@ -1,6 +1,5 @@
 import Mathlib.Combinatorics.SimpleGraph.Copy
 import Lax54.GraphDefinitions
-import Lax54.RodlTheorem
 
 /-!
 ---

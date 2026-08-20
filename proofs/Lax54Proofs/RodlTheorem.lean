@@ -1,4 +1,5 @@
 import Lax54.RodlTheorem
+import Lax54Proofs.RegularityAdapter
 import Mathlib.Combinatorics.Pigeonhole
 import Mathlib.Combinatorics.SimpleGraph.Extremal.Turan
 import Mathlib.Combinatorics.SimpleGraph.Regularity.Lemma
@@ -22,6 +23,7 @@ open scoped SimpleGraph
 namespace Lax54Proofs.RodlTheorem
 
 open Lax54.GraphDefinitions
+open Lax54Proofs.RegularityAdapter
 
 universe u v
 
@@ -1023,6 +1025,8 @@ lemma card_biUnion_eq_sum_of_pairwise_disjoint
 /--
 ---
 conclusion: Lax54.RodlTheorem.rodl_theorem
+assumptions:
+  - Lax18.SzemerediRegularityLemma.szemeredi_regularity_lemma
 ---
 Proof of Rödl's theorem. Regularity and Turán's theorem produce a large family
 of pairwise regular classes. A three-color Ramsey argument yields either a
@@ -1060,16 +1064,28 @@ theorem rodl_theorem :
   have hq : 0 < q := by dsimp [q]; positivity
   obtain ⟨η, hη, hηq, hηextract, hηembed⟩ :=
     exists_small_regularity_scale q N h hq
-  let M := SzemerediRegularity.bound η N
-  have hMpos : 0 < M := by
-    simpa [M] using SzemerediRegularity.bound_pos η N
-  have hNM : N ≤ M := by
-    simpa [M] using SzemerediRegularity.le_bound η N
+  obtain ⟨M, hNM, hregularity⟩ :=
+    Lax18.SzemerediRegularityLemma.szemeredi_regularity_lemma
+      (η / 4) N (by positivity) (by omega)
+  have hMpos : 0 < M := lt_of_lt_of_le (by omega : 0 < N) hNM
   refine ⟨2 * M, by positivity, ?_⟩
   intro V _ _ G _ hfree
   by_cases hnlarge : N ≤ Fintype.card V
-  · obtain ⟨P, hPeq, hNP, hPM, hPunif⟩ :=
-      szemeredi_regularity G hη hnlarge
+  · obtain ⟨P₀, hNP₀, hPM₀, hPeq₀, hPreg₀⟩ := hregularity G hnlarge
+    let P := finpartitionOfVertexPartition P₀
+    have hPeq : P.IsEquipartition := by
+      simpa [P] using isEquipartition_finpartitionOfVertexPartition P₀ hPeq₀
+    have hNP : N ≤ P.parts.card := by
+      change N ≤ (finpartitionOfVertexPartition P₀).parts.card
+      rw [card_finpartitionOfVertexPartition_parts]
+      exact hNP₀
+    have hPM : P.parts.card ≤ M := by
+      change (finpartitionOfVertexPartition P₀).parts.card ≤ M
+      rw [card_finpartitionOfVertexPartition_parts]
+      exact hPM₀
+    have hPunif : P.IsUniform G η := by
+      simpa [P] using isUniform_finpartitionOfVertexPartition G hη P₀
+        (hNtwo.trans hNP₀) hPreg₀
     obtain ⟨classes, hclasses_inj, hclasses_mem, hclasses_uniform⟩ :=
       exists_pairwise_uniform_parts G P η N hNtwo hNP hηextract hPunif
     let edgeColour : Fin N → Fin N → Fin 3 := fun i j =>

@@ -1,5 +1,5 @@
+import Lax54.BipartiteCombLemma
 import Lax54.KeyCombLemma
-import Lax54Proofs.BipartiteCombLemma
 import Lax54Proofs.KappaBlocks
 import Mathlib.Algebra.Order.Floor.Div
 import Mathlib.Analysis.MeanInequalities
@@ -831,6 +831,8 @@ open KeyComb
 /--
 ---
 conclusion: Lax54.KeyCombLemma.key_comb_lemma
+assumptions:
+  - Lax54.BipartiteCombLemma.bipartite_comb_lemma
 ---
 Proof of Lemma 3.1. Decompose the prescribed vertex set into the critical
 layers used in the paper and apply the $d=1/2$ bipartite comb lemma to each
@@ -900,7 +902,7 @@ theorem key_comb_lemma :
       (P.D i).card ^ 2 ≤
         128 ^ 2 * gammaParameter E X.card * (P.A i).card := by
     intro i
-    rcases Lax54Proofs.bipartite_comb_lemma G (P.C i) (P.D i)
+    rcases Lax54.BipartiteCombLemma.bipartite_comb_lemma G (P.C i) (P.D i)
         (gammaParameter E X.card) (P.A i).card
         (P.C_D_disjoint i) hGamma (P.D_covered i) (P.C_degree_D i) with
       h | h

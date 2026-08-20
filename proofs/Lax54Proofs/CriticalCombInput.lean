@@ -1,55 +1,17 @@
 import Lax54.CriticalCombInput
-import Lax54Proofs.KeyCombLemma
-import Lax54Proofs.MaximumDegreeReduction
+import Lax54.KeyCombLemma
+import Lax54.MaximumDegreeReduction
+import Lax54Proofs.GraphComplements
 import Mathlib.Tactic
 
 namespace Lax54Proofs
 
 open Finset
-open scoped SimpleGraph Matrix
+open scoped SimpleGraph
 open Lax54.GraphDefinitions
 open Lax54.KeyCombLemma
 
 universe u
-
-/-- The permutation of `Fin 5` given by multiplication by two modulo five. -/
-def c5ComplementEquiv : Fin 5 ≃ Fin 5 where
-  toFun := ![0, 2, 4, 1, 3]
-  invFun := ![0, 3, 1, 4, 2]
-  left_inv i := by fin_cases i <;> rfl
-  right_inv i := by fin_cases i <;> rfl
-
-/-- The five-cycle is self-complementary. -/
-def c5ComplementIso : C5 ≃g C5ᶜ where
-  toEquiv := c5ComplementEquiv
-  map_rel_iff' := by
-    intro i j
-    fin_cases i <;> fin_cases j <;>
-      decide
-
-/-- Induced-`C₅`-freeness is invariant under graph complementation. -/
-theorem IsC5Free.compl {V : Type u} {G : SimpleGraph V}
-    (hfree : IsC5Free G) : IsC5Free Gᶜ := by
-  intro hcopy
-  apply hfree
-  have hc : C5ᶜ ⊴ G := by
-    simpa using hcopy.compl
-  exact c5ComplementIso.isIndContained.trans hc
-
-/-- The product `κ = ωα` is invariant under complementation. -/
-@[simp] theorem kappa_compl {V : Type u} (G : SimpleGraph V) :
-    kappa Gᶜ = kappa G := by
-  simp [kappa, mul_comm]
-
-/-- `q`-criticality is invariant under graph complementation. -/
-theorem IsQCritical.compl {V : Type u} [Fintype V]
-    {G : SimpleGraph V} {q : ℕ} (hcritical : IsQCritical q G) :
-    IsQCritical q Gᶜ := by
-  constructor
-  · simpa using hcritical.1
-  · intro S hS
-    have h := hcritical.2 S hS
-    simpa [← compl_induce_eq_induce_compl] using h
 
 namespace CriticalCombInput
 
@@ -64,7 +26,8 @@ lemma package_key_comb {V : Type u} [Fintype V] [DecidableEq V]
         keyCombConstant * t ^ 2 * (C.block i).card) :
     2 ≤ t ∧
       ∀ i : Fin t, Fintype.card V ≤ D * t ^ 2 * (C.block i).card := by
-  have hK : 0 < keyCombConstant := KeyComb.keyCombConstant_pos
+  have hK : 0 < keyCombConstant := by
+    norm_num [keyCombConstant]
   have ht : 2 ≤ t := by
     have hmul : keyCombConstant * 2 ≤ keyCombConstant * t := by
       simpa [keySparsityThreshold, mul_comm] using hteeth
@@ -85,6 +48,9 @@ lemma package_key_comb {V : Type u} [Fintype V] [DecidableEq V]
 /--
 ---
 conclusion: Lax54.CriticalCombInput.exists_critical_comb_parameters
+assumptions:
+  - Lax54.KeyCombLemma.key_comb_lemma
+  - Lax54.MaximumDegreeReduction.maximum_degree_reduction
 ---
 Choose the critical exponent large enough to absorb the linear-size constant
 from Lemma 4.3. Apply the maximum-degree reduction and then Lemma 3.1 in the
@@ -103,11 +69,12 @@ theorem exists_critical_comb_parameters :
   let E := keySparsityThreshold
   have hE : 0 < E := by
     norm_num [E, keySparsityThreshold, keyCombConstant]
-  obtain ⟨D, hD, hmax⟩ := maximum_degree_reduction C5 E hE
+  obtain ⟨D, hD, hmax⟩ :=
+    Lax54.MaximumDegreeReduction.maximum_degree_reduction C5 E hE
   obtain ⟨Q, hQ⟩ :=
     pow_unbounded_of_one_lt (4 * D) (by norm_num : (1 : ℕ) < 2)
   obtain ⟨q, hq3, hQq, hkey⟩ :=
-    Lax54Proofs.key_comb_lemma E D Q (by rfl) hD
+    Lax54.KeyCombLemma.key_comb_lemma E D Q (by rfl) hD
   have h4Dpow : 4 * D ≤ 2 ^ q := by
     exact hQ.le.trans (Nat.pow_le_pow_right (by omega) hQq)
   have hqsplit : q - 2 + 2 = q := by omega

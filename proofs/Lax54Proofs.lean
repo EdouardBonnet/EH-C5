@@ -2,8 +2,10 @@ import Lax54Proofs.AveragingLemma
 import Lax54Proofs.BipartiteCombLemma
 import Lax54Proofs.CombC5
 import Lax54Proofs.CriticalCombInput
+import Lax54Proofs.GraphComplements
 import Lax54Proofs.KappaBlocks
 import Lax54Proofs.KeyCombLemma
 import Lax54Proofs.Main
 import Lax54Proofs.MaximumDegreeReduction
+import Lax54Proofs.RegularityAdapter
 import Lax54Proofs.RodlTheorem
