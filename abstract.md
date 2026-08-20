@@ -1,13 +1,20 @@
-We formalize the Erdős–Hajnal theorem for the five-cycle, following
-Chudnovsky, Scott, Seymour, and Spirkl, *Erdős–Hajnal for graphs with no
-5-hole* (2021).  The conclusion is stated in the equivalent
-integer-exponent form: there is a positive integer $q$ such that every finite
-induced-$C_5$-free graph $G$ satisfies
+This submission formalizes the proof of Chudnovsky, Scott, Seymour, and
+Spirkl that the five-cycle has the Erdős–Hajnal property. Its main theorem
+states that there is a positive integer $q$ such that every finite graph $G$
+with no induced $C_5$ satisfies
 
 $$|V(G)| \leq \max(\alpha(G),\omega(G))^q.$$
 
-The Lean development isolates the quantitative consequence of Rödl's theorem
-and the paper's key comb lemma, and formalizes the remainder of the proof:
-minimal-counterexample induction, the induced-$C_5$ obstruction between two
-comb blocks, the independent-set aggregation across anticomplete blocks, and
-the final power inequality.
+Equivalently, every such graph contains a clique or stable set of order at
+least $|V(G)|^{1/q}$.
+
+The development formalizes every argument in the paper required for this
+conclusion. It also derives the form of Rödl's theorem used there from
+mathlib's formalization of Szemerédi's regularity lemma, a finite Ramsey
+argument, and an induced-embedding lemma. The formalized arguments include the
+$d=1/2$ case of the bipartite comb lemma (Theorem 2.1), the critical-graph comb
+lemma (Lemma 3.1), the averaging and maximum-degree reductions (Lemmas 4.2 and
+4.3), and the final minimal-counterexample argument (Theorem 4.4). The Lean
+statements parameterize densities by reciprocals of positive integers and
+clear all denominators. Some absolute constants are enlarged to avoid
+rounding; neither modification affects the Erdős–Hajnal conclusion.

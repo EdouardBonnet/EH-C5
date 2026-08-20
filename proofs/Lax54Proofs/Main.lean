@@ -1,6 +1,7 @@
 import Lax54.CriticalCombInput
 import Lax54.ErdosHajnalC5
 import Lax54Proofs.CombC5
+import Lax54Proofs.CriticalCombInput
 import Lax54Proofs.KappaBlocks
 import Mathlib.Tactic
 
@@ -32,22 +33,21 @@ theorem kappa_le_homogeneousNumber_sq
     _ = max G.cliqueNum G.indepNum ^ 2 := by simp [pow_two]
 
 /--
-The comb promised by the quantitative input is incompatible with
-`q`-criticality in a `C₅`-free graph.  This is the contradiction at the end
-of Theorem 4.4, written without real roots.
+The critical-comb conclusion is incompatible with `q`-criticality in an
+induced-`C₅`-free graph. This is the final contradiction in Theorem 4.4,
+expressed without real roots.
 -/
 theorem not_isQCritical_of_critical_comb
     (q A : ℕ) (hq : 3 ≤ q) (hA : A ≤ 2 ^ (q - 2))
-    (hcomb : ∀ {V : Type u} [Fintype V] [DecidableEq V]
-      (G : SimpleGraph V), IsC5Free G → IsQCritical q G →
-        ∃ (t : ℕ) (C : StableHubComb G t),
-          2 ≤ t ∧
-            ∀ i : Fin t, Fintype.card V ≤ A * t ^ 2 * (C.block i).card)
     {V : Type u} [Fintype V] [DecidableEq V] (G : SimpleGraph V)
-    (hfree : IsC5Free G) : ¬ IsQCritical q G := by
+    (hfree : IsC5Free G)
+    (hcomb : ∃ (t : ℕ) (C : StableHubComb G t),
+      2 ≤ t ∧
+        ∀ i : Fin t, Fintype.card V ≤ A * t ^ 2 * (C.block i).card) :
+    ¬ IsQCritical q G := by
   classical
   intro hcritical
-  obtain ⟨t, C, ht, hlarge⟩ := hcomb G hfree hcritical
+  obtain ⟨t, C, ht, hlarge⟩ := hcomb
   have htpos : 0 < t := by omega
   have hanti : ∀ {i j : Fin t}, i ≠ j →
       ∀ x ∈ C.block i, ∀ y ∈ C.block j, ¬ G.Adj x y :=
@@ -100,17 +100,20 @@ theorem not_isQCritical_of_critical_comb
   exact this.false
 
 /--
-The minimal-counterexample induction: if a counterexample is not critical, a
-smaller induced counterexample exists; if it is critical, the comb
-contradiction applies.
+Strong induction on the number of vertices. A noncritical counterexample has
+a smaller induced counterexample; a critical counterexample is excluded by
+the comb argument.
 -/
 theorem kappa_pow_bound_of_critical_comb
     (q A : ℕ) (hq : 3 ≤ q) (hA : A ≤ 2 ^ (q - 2))
     (hcomb : ∀ {V : Type u} [Fintype V] [DecidableEq V]
       (G : SimpleGraph V), IsC5Free G → IsQCritical q G →
-        ∃ (t : ℕ) (C : StableHubComb G t),
-          2 ≤ t ∧
-            ∀ i : Fin t, Fintype.card V ≤ A * t ^ 2 * (C.block i).card) :
+        (∃ (t : ℕ) (C : StableHubComb G t),
+            2 ≤ t ∧
+              ∀ i : Fin t, Fintype.card V ≤ A * t ^ 2 * (C.block i).card) ∨
+        (∃ (t : ℕ) (C : StableHubComb Gᶜ t),
+            2 ≤ t ∧
+              ∀ i : Fin t, Fintype.card V ≤ A * t ^ 2 * (C.block i).card)) :
     ∀ {V : Type u} [Fintype V] (G : SimpleGraph V),
       IsC5Free G → Fintype.card V ≤ kappa G ^ q := by
   classical
@@ -133,26 +136,29 @@ theorem kappa_pow_bound_of_critical_comb
             hsub {x : V // x ∈ S} (G.induce (S : Set V))
               (by simp) (Lax54Proofs.IsC5Free.induce_finset hfree S)
         have hcrit : IsQCritical q G := ⟨hbad, hproper⟩
-        exact (not_isQCritical_of_critical_comb q A hq hA hcomb G hfree) hcrit
+        rcases hcomb G hfree hcrit with hdirect | hcompl
+        · exact (not_isQCritical_of_critical_comb q A hq hA G hfree hdirect) hcrit
+        · exact (not_isQCritical_of_critical_comb q A hq hA Gᶜ
+            (Lax54Proofs.IsC5Free.compl hfree) hcompl)
+            (Lax54Proofs.IsQCritical.compl hcrit)
   intro V _ G hfree
   exact hP (Fintype.card V) V G rfl hfree
 
 /--
 ---
 conclusion: Lax54.ErdosHajnalC5.erdos_hajnal_C5
-assumptions:
-  - Lax54.CriticalCombInput.exists_critical_comb_parameters
 ---
-Proof of Theorem 4.4.  Apply the quantitative critical-comb consequence,
-exclude critical counterexamples by the induced-five-cycle and anticomplete
-block argument, then pass from `κ = αω` to the largest homogeneous set.
+Proof of Theorem 4.4. Strong induction reduces the result to a critical
+counterexample. The critical-comb statement and the induced-$C_5$ obstruction
+between distinct blocks exclude that case. Finally,
+$\kappa(G)=\alpha(G)\omega(G)\leq h(G)^2$ gives the asserted exponent.
 -/
 theorem erdos_hajnal_C5 :
     ∃ q : ℕ, 0 < q ∧
       ∀ {V : Type u} [Fintype V] (G : SimpleGraph V),
         IsC5Free G → Fintype.card V ≤ homogeneousNumber G ^ q := by
   obtain ⟨q, A, hq, hA, hcomb⟩ :=
-    Lax54.CriticalCombInput.exists_critical_comb_parameters
+    Lax54Proofs.CriticalCombInput.exists_critical_comb_parameters
   refine ⟨2 * q, by omega, ?_⟩
   intro V _ G hfree
   have hkappa : Fintype.card V ≤ kappa G ^ q :=
