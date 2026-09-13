@@ -3,7 +3,7 @@ import Lax54.GraphDefinitions
 /-!
 ---
 title: Rödl's theorem for induced-subgraph-free graphs
-type: theorem
+type: lemma
 ---
 For every finite graph $H$ and every positive integer $E$, there is a positive
 integer $D$ such that every finite induced-$H$-free graph $G$ contains a set

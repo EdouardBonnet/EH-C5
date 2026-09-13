@@ -4,7 +4,7 @@ import Lax54.GraphDefinitions
 /-!
 ---
 title: Maximum-degree form of Rödl's theorem
-type: theorem
+type: lemma
 ---
 Lemma 4.3 of the paper, with denominators cleared. For every finite graph $H$
 and every $E>0$, there is a positive integer $D$ such that every finite

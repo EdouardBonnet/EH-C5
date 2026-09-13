@@ -3,9 +3,9 @@ import Mathlib.Combinatorics.SimpleGraph.Regularity.Lemma
 import Mathlib.Tactic
 
 /-!
-# Adapter for the [lax-18](https://lax-archive.github.io/lax-website/lax-18/) regularity lemma
+# Adapter for the [lax-18](https://laxarchive.org/lax-18/) regularity lemma
 
-[lax-18](https://lax-archive.github.io/lax-website/lax-18/) states Szemerédi's regularity lemma using indexed vertex partitions
+[lax-18](https://laxarchive.org/lax-18/) states Szemerédi's regularity lemma using indexed vertex partitions
 and non-strict regular pairs.  The Rödl argument in this submission uses
 mathlib's unlabelled finite partitions and strict uniform pairs.  This file
 relates the two formulations.  Passing from parameter `ε` to any larger
@@ -73,7 +73,7 @@ lemma isEquipartition_finpartitionOfVertexPartition
   obtain ⟨j, -, rfl⟩ := Finset.mem_image.1 hB
   exact (hP j i).2
 
-/-- [lax-18](https://lax-archive.github.io/lax-website/lax-18/)'s real-valued density agrees with mathlib's edge density. -/
+/-- [lax-18](https://laxarchive.org/lax-18/)'s real-valued density agrees with mathlib's edge density. -/
 lemma density_eq_mathlib_edgeDensity
     (G : SimpleGraph V) [DecidableRel G.Adj] (A B : Finset V) :
     Lax18.EdgeDensity.density G A B = (G.edgeDensity A B : ℝ) := by
@@ -94,7 +94,7 @@ lemma density_eq_mathlib_edgeDensity
   ext p
   simp [SimpleGraph.interedges, Rel.interedges]
 
-/-- A non-strict [lax-18](https://lax-archive.github.io/lax-website/lax-18/) regular pair is a strict mathlib-uniform pair at any
+/-- A non-strict [lax-18](https://laxarchive.org/lax-18/) regular pair is a strict mathlib-uniform pair at any
 larger parameter. -/
 lemma isUniform_of_isRegularPair
     (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -183,7 +183,7 @@ def swapPairEmbedding (A : Type*) : (A × A) ↪ (A × A) where
     exact congrArg Prod.swap h
 
 /-- Every ordered non-`eta`-uniform pair gives one of the two orientations of
-an unordered [lax-18](https://lax-archive.github.io/lax-website/lax-18/)-irregular pair at the smaller parameter `epsilon`. -/
+an unordered [lax-18](https://laxarchive.org/lax-18/)-irregular pair at the smaller parameter `epsilon`. -/
 lemma card_orderedNonUniformIndices_le_two_mul_irregularPairCount
     (G : SimpleGraph V) [DecidableRel G.Adj]
     {epsilon eta : ℝ} (hεη : epsilon < eta)
@@ -232,7 +232,7 @@ lemma card_orderedNonUniformIndices_le_two_mul_irregularPairCount
   change S.card ≤ 2 * I.card
   omega
 
-/-- A [lax-18](https://lax-archive.github.io/lax-website/lax-18/) regular partition at parameter `eta / 4` is a mathlib-uniform
+/-- A [lax-18](https://laxarchive.org/lax-18/) regular partition at parameter `eta / 4` is a mathlib-uniform
 partition at parameter `eta`, provided that it has at least two parts. -/
 lemma isUniform_finpartitionOfVertexPartition
     (G : SimpleGraph V) [DecidableRel G.Adj]

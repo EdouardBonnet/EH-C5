@@ -18,3 +18,8 @@ lemma (Lemma 3.1), the averaging and maximum-degree reductions (Lemmas 4.2 and
 statements parameterize densities by reciprocals of positive integers and
 clear all denominators. Some absolute constants are enlarged to avoid
 rounding; neither modification affects the Erdős–Hajnal conclusion.
+
+The annotated paper covers the five-cycle argument in Sections 2–4 and its
+introductory statement. The later results about other excluded graphs are
+outside this submission’s scope. Annotation links use the integral versions
+described in the concept cards.

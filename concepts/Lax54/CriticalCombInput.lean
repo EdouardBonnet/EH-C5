@@ -3,7 +3,7 @@ import Lax54.GraphDefinitions
 /-!
 ---
 title: Quantitative critical-comb consequence
-type: theorem
+type: lemma
 ---
 This statement combines Lemmas 3.1 and 4.3 with the choice of parameters in
 the proof of Theorem 4.4. There are integers $q\geq 3$ and

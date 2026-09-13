@@ -6,6 +6,8 @@ title: "Erdős–Hajnal for graphs with no 5-hole"
 authors:
   - name: "Édouard Bonnet"
     github: "EdouardBonnet"
+  - name: "Codex (GPT-6)"
+  - name: "Codex 5.6"
 bibEntries:
   - |-
     @article{ChudnovskyScottSeymourSpirkl2021,
@@ -21,3 +23,7 @@ bibEntries:
 issue:
   repositoryId: 1320232165
   number: 54
+paper:
+  folder: paper
+  main: ehC5.tex
+  engine: pdflatex

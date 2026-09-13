@@ -3,7 +3,7 @@ import Lax54.GraphDefinitions
 /-!
 ---
 title: Sparse graph thinning lemma
-type: theorem
+type: lemma
 ---
 Lemma 4.2 of the paper, with denominators cleared. Let $Z$ induce a graph of
 edge density at most $1/E$, and suppose $2m \leq |Z|+1$. Then $Z$ contains an

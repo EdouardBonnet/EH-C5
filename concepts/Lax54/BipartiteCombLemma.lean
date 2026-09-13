@@ -3,7 +3,7 @@ import Lax54.GraphDefinitions
 /-!
 ---
 title: Bipartite comb lemma
-type: theorem
+type: lemma
 ---
 The $d=1/2$ case of Theorem 2.1, with denominators cleared. Let $A$ and $B$ be
 disjoint vertex sets. Suppose that every vertex of $B$ has a neighbor in $A$

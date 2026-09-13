@@ -3,7 +3,7 @@ import Lax54.GraphDefinitions
 /-!
 ---
 title: Stable hubbed comb in a critical graph
-type: theorem
+type: lemma
 ---
 Lemma 3.1 of the paper, with reciprocal integer parameters. Let
 $K=2^{20}$. For every sufficiently large $E$, every $D>0$, and every lower
