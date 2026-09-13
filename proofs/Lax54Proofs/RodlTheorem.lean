@@ -169,11 +169,11 @@ variable {A : Type*} [Fintype A] [DecidableEq A]
 def nonUniformGraph (P : Finpartition (Finset.univ : Finset A)) (η : ℝ) :
     SimpleGraph {U // U ∈ P.parts} where
   Adj U V := U ≠ V ∧ ¬ G.IsUniform η U.1 V.1
-  symm := by
+  symm := ⟨by
     rintro U V ⟨hUV, hirr⟩
     refine ⟨hUV.symm, ?_⟩
     intro hreg
-    exact hirr hreg.symm
+    exact hirr hreg.symm⟩
   loopless := ⟨fun U h => h.1 rfl⟩
 
 noncomputable instance nonUniformGraph.instDecidableRel
@@ -757,11 +757,12 @@ lemma sparse_equal_block_union
       · intro hij
         have heqij : ij.1 = ij.2 := (Finset.mem_filter.1 hij).2
         rw [Finset.mem_map]
-        exact ⟨ij.1, Finset.mem_univ _, by ext <;> simp [emb, heqij]⟩
+        exact ⟨ij.1, Finset.mem_univ _, Prod.ext rfl heqij⟩
       · intro hij
         rw [Finset.mem_map] at hij
         obtain ⟨i, -, rfl⟩ := hij
-        simp [diag, pairs, emb]
+        change (i, i) ∈ diag
+        simp [diag, pairs]
     rw [heq, Finset.card_map, Finset.card_univ, Fintype.card_fin]
   have hoffcard : off.card ≤ r ^ 2 := by
     calc
@@ -842,11 +843,12 @@ lemma sparse_bounded_block_union
       · intro hij
         have heqij : ij.1 = ij.2 := (Finset.mem_filter.1 hij).2
         rw [Finset.mem_map]
-        exact ⟨ij.1, Finset.mem_univ _, by ext <;> simp [emb, heqij]⟩
+        exact ⟨ij.1, Finset.mem_univ _, Prod.ext rfl heqij⟩
       · intro hij
         rw [Finset.mem_map] at hij
         obtain ⟨i, -, rfl⟩ := hij
-        simp [diag, pairs, emb]
+        change (i, i) ∈ diag
+        simp [diag, pairs]
     rw [heq, Finset.card_map, Finset.card_univ, Fintype.card_fin]
   have hoffcard : off.card ≤ r ^ 2 := by
     calc

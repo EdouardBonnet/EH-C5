@@ -8,7 +8,7 @@ $$|V(G)| \leq \max(\alpha(G),\omega(G))^q.$$
 Equivalently, every such graph contains a clique or stable set of order at
 least $|V(G)|^{1/q}$.
 
-The development formalizes every argument in the paper required for this
+The submission formalizes every argument in the paper required for this
 conclusion. It also derives the form of Rödl's theorem used there from
 mathlib's formalization of Szemerédi's regularity lemma, a finite Ramsey
 argument, and an induced-embedding lemma. The formalized arguments include the

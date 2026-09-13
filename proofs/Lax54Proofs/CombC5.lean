@@ -1,8 +1,6 @@
 import Lax54.GraphDefinitions
 import Mathlib.Tactic
 
-set_option maxHeartbeats 1600000
-
 namespace Lax54Proofs
 
 open Finset
@@ -77,6 +75,7 @@ theorem StableHubComb.blocks_anticomplete_of_c5Free
     fin_cases a <;> fin_cases b <;>
       simp_all [f, Matrix.cons_val_zero, Matrix.cons_val_one]
   · intro a b
+    change G.Adj (f a) (f b) ↔ _
     fin_cases a <;> fin_cases b <;>
       simp_all [f, SimpleGraph.cycleGraph_adj, Fin.ext_iff, G.adj_comm] <;>
       decide

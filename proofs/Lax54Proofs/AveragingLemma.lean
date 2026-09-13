@@ -342,7 +342,7 @@ theorem sparse_graph_thinning :
     intro x
     have hdeg :
         (G.induce (({v} : Finset V) : Set V)).degree x < 1 := by
-      simpa only [Fintype.card_coe, Finset.card_singleton] using
+      simpa only [Finset.coe_sort_coe, Fintype.card_coe, Finset.card_singleton] using
         (G.induce (({v} : Finset V) : Set V)).degree_lt_card_verts x
     have hdeg0 :
         (G.induce (({v} : Finset V) : Set V)).degree x = 0 := by omega
