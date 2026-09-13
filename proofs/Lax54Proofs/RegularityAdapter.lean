@@ -180,8 +180,7 @@ lemma card_orderedNonUniformIndices
 def swapPairEmbedding (A : Type*) : (A × A) ↪ (A × A) where
   toFun := Prod.swap
   inj' p q h := by
-    simpa only [Prod.swap_prod_mk, Prod.mk.injEq] using
-      congrArg Prod.swap h
+    exact congrArg Prod.swap h
 
 /-- Every ordered non-`eta`-uniform pair gives one of the two orientations of
 an unordered Lax-18-irregular pair at the smaller parameter `epsilon`. -/

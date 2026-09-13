@@ -281,7 +281,7 @@ theorem exists_criticalPartition (q : ℕ) (hcritical : IsQCritical q G)
         cases i using Fin.cases with
         | zero =>
             intro x hx
-            simpa [A, hub] using hx
+            simpa [Afun, A, hub] using hx
         | succ j =>
             intro x hx
             have hx' := P.A_subset_neighbors j hx

@@ -1,6 +1,8 @@
 import Lax54.GraphDefinitions
 import Mathlib.Tactic
 
+set_option maxHeartbeats 1600000
+
 namespace Lax54Proofs
 
 open Finset
